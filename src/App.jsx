@@ -6,7 +6,18 @@ import './App.css'
 function App() {
   return (
     <>
+    <header>
       <h1>Fake cart</h1>
+        <hr />
+      </header>  
+      <main>
+        Product List
+      </main>
+      <footer>
+        <hr />
+        &copy;2005. all rights reserved
+      </footer>
+    
     </>
   )
 }
