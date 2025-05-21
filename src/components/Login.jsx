@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Cart() {
+export default function login() {
   return (
     <div>My Login</div>
   )
