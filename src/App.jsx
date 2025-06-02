@@ -5,19 +5,15 @@ import "./App.css";
 import Product from "./components/Product";
 import Cart from "./components/Cart";
 import Login from "./components/Login";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+
 function App() {
   return (
     <div>
       <BrowserRouter>
-        <header>
-          <h1>Fake Cart:By Abdul</h1>
-          <Link to="/">Home</Link>-
-          <Link to="/cart">Cart</Link>-
-          <Link to="/login">Login</Link>
-          <hr />
-        </header>
-
+        <Header />
         <main>
           <Routes>
             <Route index element={<Product />} />
@@ -26,11 +22,7 @@ function App() {
              <Route path="/login" element={<Login/>}></Route>
           </Routes>
         </main>
-
-        <footer>
-          <hr />
-          &copy; 2005. All rights Reserved.
-        </footer>
+        <Footer />
       </BrowserRouter>
     </div>
   );
