@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, createContext } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
@@ -9,22 +9,29 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
+// Create AppContext
+export const AppContext = createContext();
+
 function App() {
+  const [user, setUser] = useState(null);
+
   return (
-    <div>
-      <BrowserRouter>
-        <Header />
-        <main>
-          <Routes>
-            <Route index element={<Product />} />
-            <Route path="/" element={<Product/>}></Route>
-            <Route path="/cart" element={<Cart/>}></Route>
-             <Route path="/login" element={<Login/>}></Route>
-          </Routes>
-        </main>
-        <Footer />
-      </BrowserRouter>
-    </div>
+    <AppContext.Provider value={{ user, setUser }}>
+      <div>
+        <BrowserRouter>
+          <Header />
+          <main>
+            <Routes>
+              <Route index element={<Product />} />
+              <Route path="/" element={<Product/>}></Route>
+              <Route path="/cart" element={<Cart/>}></Route>
+               <Route path="/login" element={<Login/>}></Route>
+            </Routes>
+          </main>
+          <Footer />
+        </BrowserRouter>
+      </div>
+    </AppContext.Provider>
   );
 }
 export default App;
