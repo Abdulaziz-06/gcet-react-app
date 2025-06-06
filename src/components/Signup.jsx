@@ -1,9 +1,8 @@
-import React, { useState, useContext } from 'react'
-import { AppContext } from '../App'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
 import './Login.css'
 
-export default function Login() {
+export default function Signup() {
   const [formData, setFormData] = useState({
     email: '',
     pass: ''
@@ -12,7 +11,7 @@ export default function Login() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   
-  const { user, setUser } = useContext(AppContext)
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     setFormData({
@@ -29,7 +28,7 @@ export default function Login() {
     setSuccess('')
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}users/login`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}users/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -40,18 +39,15 @@ export default function Login() {
       const data = await response.json()
 
       if (response.ok) {
-        setSuccess('Login successful!')
-        const userData = data.user || data
-        setUser(userData) 
-        
-        if (data.token) {
-          localStorage.setItem('authToken', data.token)
-        }
-        localStorage.setItem('userData', JSON.stringify(userData))
+        setSuccess('Account created successfully! You can now login.')
         setFormData({ email: '', pass: '' })
         
+        setTimeout(() => {
+          navigate('/login')
+        }, 2000)
+        
       } else {
-        setError(data.message || 'Login failed. Please try again.')
+        setError(data.message || 'Signup failed. Please try again.')
       }
     } catch (err) {
       setError('Network error. Please check your connection and try again.')
@@ -60,32 +56,10 @@ export default function Login() {
     }
   }
 
-  if (user) {
-    return (
-      <div className="login-container">
-        <div className="login-form">
-          <h2>Welcome back!</h2>
-          <p>You are logged in as: {user.email || user.name || 'User'}</p>
-          <button 
-            onClick={() => {
-              setUser(null)
-              localStorage.removeItem('authToken')
-              localStorage.removeItem('userData')
-              setSuccess('Logged out successfully!')
-            }}
-            className="logout-btn"
-          >
-            Logout
-          </button>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className="login-container">
       <div className="login-form">
-        <h2>Login</h2>
+        <h2>Sign Up</h2>
         
         {error && <div className="error-message">{error}</div>}
         {success && <div className="success-message">{success}</div>}
@@ -116,6 +90,7 @@ export default function Login() {
               required
               disabled={loading}
               placeholder="Enter your password"
+              minLength="6"
             />
           </div>
           
@@ -124,12 +99,12 @@ export default function Login() {
             disabled={loading}
             className="login-btn"
           >
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? 'Creating Account...' : 'Sign Up'}
           </button>
         </form>
         
         <div className="login-footer">
-          <p>Don't have an account? <Link to="/signup">Sign up</Link></p>
+          <p>Already have an account? <Link to="/login">Login</Link></p>
         </div>
       </div>
     </div>
